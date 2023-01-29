@@ -51,4 +51,24 @@ export class UsersController {
       return { message: error };
     }
   }
+
+  @Get(':id')
+  async getUser(@Param('id') id: string) {
+    try {
+      const response = await this.usersService.getWithRole(id);
+
+      return {
+        data: {
+          message: 'User with roles',
+          user: {
+            name: response.name,
+            email: response.email,
+          },
+          role: response.role._id,
+        },
+      };
+    } catch (error) {
+      return { message: error };
+    }
+  }
 }
