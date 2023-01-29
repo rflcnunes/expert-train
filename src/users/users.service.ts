@@ -28,9 +28,9 @@ export class UsersService {
   }
 
   async getWithRole(id: string) {
-    const selectedUser = await (
-      await this.userModel.findById({ _id: id })
-    ).populate('role');
+    const selectedUser = await this.userModel
+      .findById({ _id: id })
+      .populate('role');
 
     return selectedUser;
   }
