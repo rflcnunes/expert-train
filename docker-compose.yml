@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: appfeed_node
+    restart: always
+    ports:
+      - 3030:3030
+    volumes:
+      - ./:/usr/src/app
+    networks:
+      - appfeed_network
+  mongo:
+    image: mongo:latest
+    container_name: appfeed_mongo
+    restart: always
+    environment:
+      MONGODB_DATABASE: test
+    ports:
+      - 27017:27017
+    networks:
+      - appfeed_network
+
+  mongo-express:
+    image: mongo-express
+    container_name: appfeed_mongo-express-app
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+    networks:
+      - appfeed_network
+
+volumes:
+  appfeed_node:
+    driver: local
+
+networks:
+  appfeed_network:
+    driver: bridge
